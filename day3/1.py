@@ -1,58 +1,24 @@
-import math
-import string
-
-number = 312051
-# number = 12
-matrix_side = math.ceil(number ** 0.5) * 2
-
-matrix = []
-for i in range(matrix_side):
-    matrix.append([0 for x in range(matrix_side)])
-
-head = 1
-midx = math.floor(matrix_side / 2)
-midy = math.floor(matrix_side / 2)
-x = midx
-y = midy
-result = []
-step = 1
-matrix[x][y] = head
-
-
-def inc_head(x, y, head, number):
-    matrix[x][y] = head
-    if head == number:
-        return True
-    return False
+def find_number(number):
+    x = 0
+    y = 0
+    step = 1
+    side = 0
+    head = 1
+    while head < number:
+        for i in range(step):
+            x += 1 if (side + 4) % 4 == 0 else 0
+            y -= 1 if (side + 5) % 4 == 0 else 0
+            x -= 1 if (side + 6) % 4 == 0 else 0
+            y += 1 if (side + 7) % 4 == 0 else 0
+            head += 1
+            if head == number:
+                return [x, y]
+        side += 1
+        step += 1 if side % 2 == 0 else 0
+    return [0, 0]
 
 
-while head < number:
-    matrix[x][y] = head
-    # right
-    for i in range(step):
-        x += 1
-        head += 1
-        result = [x,y] if inc_head(x, y, head, number) else result
-    # top
-    for i in range(step):
-        y -= 1
-        head += 1
-        result = [x,y] if inc_head(x, y, head, number) else result
-    step += 1
-    # left
-    for i in range(step):
-        x -= 1
-        head += 1
-        result = [x,y] if inc_head(x, y, head, number) else result
-    # down
-    for i in range(step):
-        y += 1
-        head += 1
-        result = [x,y] if inc_head(x, y, head, number) else result
-    step += 1
+#result = find_number(12)
+result = find_number(312051)
 
-# for row in matrix:
-#     str_row = '\t'.join([str(x) for x in row])
-#     print(str_row)
-
-print(abs(midx - result[0]) + abs(midy - result[1]))
+print(abs(result[0]) + abs(result[1]))

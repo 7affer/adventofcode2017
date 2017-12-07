@@ -1,29 +1,14 @@
-file = open('input.txt', 'r')
-
-input = []
-
-for line in file.readlines():
-    row = [int(n) for n in line.split()]
-    input.append(row)
-
-checksum = 0
-
+from functools import reduce
 
 def min(row):
-    val = row[0]
-    for n in row:
-        val = n if n < val else val
-    return val
-
+    return reduce(lambda x, y: x if x < y else y, row)
 
 def max(row):
-    val = row[0]
-    for n in row:
-        val = n if n > val else val
-    return val
+    return reduce(lambda x, y: x if x > y else y, row)
 
+file = open('day2/input.txt', 'r')
+input = [[int(n) for n in row.split()] for row in file.readlines()]
 
-for row in input:
-    checksum += abs(min(row) - max(row))
+checksum = sum([abs(min(row) - max(row)) for row in input])
 
 print(checksum)
